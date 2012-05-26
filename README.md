@@ -1,9 +1,7 @@
-README for MemtestG80 open source edition
-Version 1.00
-Imran Haque
-21 Apr 2009
+# README for MemtestG80 open source edition
 
-CONTENTS
+## CONTENTS
+
 1. Description
 2. How to build
 3. Using MemtestG80 as a library
@@ -13,7 +11,7 @@ CONTENTS
 7. Licensing
 
 
-1. DESCRIPTION
+## DESCRIPTION
 
 MemtestG80 is a program to test the memory and logic of NVIDIA CUDA-enabled
 GPUs for errors. 
@@ -27,14 +25,12 @@ command-line interface standalone tester included in the closed-source build;
 certain capabilities, such as the ability to transmit results back to Stanford,
 are not present in the open-source version.
 
-Up-to-date versions of both the closed- and open-source versions of MemtestG80
-may be downloaded at https://simtk.org/home/memtest. The closed-source version
-is available as precompiled binaries; the open-source version is available only
-as a source package.
+The closed-source version can be found at https://simtk.org/home/memtest. The
+open-source version lives at http://github.com/ihaque/memtestG80.
 
 This document concerns the open-source version.
 
-2. HOW TO BUILD
+## HOW TO BUILD
 
 First, ensure that the CUDA toolkit binaries and libraries are included in the
 appropriate path variables for you system so that you can run the nvcc
@@ -46,7 +42,7 @@ by executing the following:
 
     make -f Makefile.OS
 
-where OS is one of linux32, linux64, osx, or windows. Note that on Windows,
+where `OS` is one of linux32, linux64, osx, or windows. Note that on Windows,
 GNU make (included, for example, in Cygwin) is assumed, not Microsoft nmake.
 
 The resulting executable, memtestG80, should be immediately executable
@@ -57,7 +53,7 @@ MemtestG80 uses the MIT/X licensed popt library to handle command line
 arguments; precompiled static libraries are provided for Linux and OS X, but
 dynamic libraries for Windows.
 
-3. USING MEMTESTG80 AS A LIBRARY
+## USING MEMTESTG80 AS A LIBRARY
 
 We encourage software developers to use MemtestG80 as a code library in their
 programs to verify the correct operation of GPUs on which they execute. The
@@ -67,16 +63,16 @@ to MemtestG80 via a shared library (.so, .dll) mechanism; open-source software
 can integrate it via static linkage.
 
 The API for the memory tests is defined in memtestG80_core.h. There are two
-APIs - a low-level API defined by CUDA __host__ functions, and a high-level
+APIs - a low-level API defined by CUDA `__host__` functions, and a high-level
 API defined by the memtestState class. At an even lower level, the individual
-tests are implemented by CUDA __global__ functions. Naming conventions are
+tests are implemented by CUDA `__global__` functions. Naming conventions are
 explained in comments in memtestG80_core.cu.
 
 In general, for ease of use, we recommend the use of the high-level (object-
 oriented) API. An example of the API's usage can be found in the standalone
 tester, memtestG80_cli.cu.
 
-4. CLI STANDALONE BASIC USAGE
+## CLI STANDALONE BASIC USAGE
 
 MemtestG80 is available for Windows, Linux, and Mac OS X-based machines. In the
 following directions, please replace "MemtestG80" with the name of the program
@@ -118,7 +114,7 @@ testing, we have found that even "problematic" cards may only fail sporadically
 to properly verify stability MemtestG80 should be run for an extended period of
 time.
 
-5. CLI STANDALONE ADVANCED USAGE
+## CLI STANDALONE ADVANCED USAGE
 
 MemtestG80 supports the use of various command line flags to enable
 advanced functionality. Flags may be issued in any order, and may precede
@@ -138,28 +134,29 @@ or -l options:
 
 6. Frequently Asked Questions
 
-    - I have an {ATI,NVIDIA 5/6/7-series} video card and it doesn't work!
-        - Currently, only NVIDIA CUDA-enabled GPUs are supported. As of
+- I have an {ATI,NVIDIA 5/6/7-series} video card and it doesn't work!
+        * Currently, only NVIDIA CUDA-enabled GPUs are supported. As of
           this writing, only the GeForce 8-, 9-, and GTX-series, the Quadro
           FX series, and the Tesla series of NVIDIA products support CUDA.
 
-    - I have a CUDA-enabled card, but it still doesn't work!
-        - You must have a CUDA-enabled graphics driver installed. See
+- I have a CUDA-enabled card, but it still doesn't work!
+        * You must have a CUDA-enabled graphics driver installed. See
           the Downloads section of http://nvidia.com/cuda to obtain a CUDA
           driver.
         
-    - I get an error complaining about a missing "cudart.dll" on Windows!
-        - This is a CUDA runtime file which we currently cannot redistribute
+- I get an error complaining about a missing "cudart.dll" on Windows!
+        * This is a CUDA runtime file which we currently cannot redistribute
           with MemtestG80. However, a version of the file is bundled with the
           Folding@home GPU client; that file will work if copied into the 
           MemtestG80 runtime directory.
 
-6. Licensing
+## Licensing
 
 The source code to the open-source edition of MemtestG80 is Copyright 2009,
 Stanford University, and is licensed under the terms of the GNU Lesser General
 Public License, version 3, reproduced below:
 
+```
 		   GNU LESSER GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
@@ -325,3 +322,4 @@ whether future versions of the GNU Lesser General Public License shall
 apply, that proxy's public statement of acceptance of any version is
 permanent authorization for you to choose that version for the
 Library.
+```
