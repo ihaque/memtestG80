@@ -1,0 +1,20 @@
+POPT_DIR=popt/win32
+CFLAGS=-DWINDOWS -I$(POPT_DIR) -L$(POPT_DIR) -DCURL_STATICLIB -O
+NVCCFLAGS=$(CFLAGS) -Xptxas -v
+NVCC=nvcc
+CXX=nvcc
+
+all: memtestG80
+
+clean:
+	rm -f *.obj
+	rm -f memtestG80.exe
+
+memtestG80_core.obj: memtestG80_core.cu memtestG80_core.h
+	$(NVCC) -c $(NVCCFLAGS) -o memtestG80_core.obj memtestG80_core.cu
+
+
+
+memtestG80: memtestG80_core.obj memtestG80_cli.cu
+	$(NVCC) $(NVCCFLAGS) -o memtestG80 memtestG80_core.obj memtestG80_cli.cu -llibpopt
+

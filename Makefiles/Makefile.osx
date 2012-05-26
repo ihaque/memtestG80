@@ -1,0 +1,20 @@
+POPT_DIR=popt/osx
+CFLAGS=-DOSX -O -Wall -I$(POPT_DIR)
+NVCCFLAGS=-DOSX -I$(POPT_DIR) -L$(POPT_DIR) -O -Xptxas -v -Xcompiler -Wall
+NVCC=nvcc
+CXX=g++
+
+all: memtestG80
+
+clean:
+	rm -f *.o
+	rm -f memtestG80
+
+memtestG80_core.o: memtestG80_core.cu memtestG80_core.h
+	$(NVCC) -c $(NVCCFLAGS) -o memtestG80_core.o memtestG80_core.cu
+
+
+
+memtestG80: memtestG80_core.o memtestG80_cli.cu
+	$(NVCC) $(NVCCFLAGS) -o memtestG80 memtestG80_core.o memtestG80_cli.cu -lpopt -liconv
+
