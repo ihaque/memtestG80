@@ -736,6 +736,9 @@ __global__ void deviceWriteRandomBlocks(uint* base,uint N,int seed) { //{{{
         
         // Set the seed for the next round to the last number calculated in this round
         seed = randomBlock[blockDim.x-1];
+
+        // Prevent a race condition in which last work-item can overwrite seed before others have read it
+        __syncthreads();
         
         // Blit shmem block out to global memory
         *(THREAD_ADDRESS(base,N,i)) = randomBlock[threadIdx.x];
@@ -770,6 +773,9 @@ __global__ void deviceVerifyRandomBlocks(uint* base,uint N,int seed,uint* blockE
         
         // Set the seed for the next round to the last number calculated in this round
         seed = randomBlock[blockDim.x-1];
+        
+        // Prevent a race condition in which last work-item can overwrite seed before others have read it
+        __syncthreads();
         
         //if ( randomBlock[threadIdx.x] != *(THREAD_ADDRESS(base,N,i))) threadErrorCount[threadIdx.x]++;
         threadErrorCount[threadIdx.x] += BITSDIFF(*(THREAD_ADDRESS(base,N,i)),randomBlock[threadIdx.x]);
