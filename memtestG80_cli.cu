@@ -17,8 +17,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "memtestG80_core.h"
-#include <popt.h>
-
+#include "ezOptionParser.hpp"
 
 #ifdef OSX
 inline size_t strnlen(const char* s,size_t maxlen) {
@@ -77,60 +76,44 @@ int main(int argc,const char** argv) {
     int gpuID=0;
     int showLicense = 0;
     cudaDeviceProp deviceProps;
-    
+
     print_usage(); 
+    ez::ezOptionParser opt;
 
-    // Set up popt structures {{{
-    int nFlags = 2;
-    struct poptOption* options = new struct poptOption[nFlags+1];
-    enum arg_flags {ARG_GPU=1,ARG_FORCECOMM,ARG_BANCOMM,ARG_RAMCLOCK,ARG_CORECLOCK,ARG_LICENSE};
-    options[nFlags].longName  = NULL;
-    options[nFlags].shortName = '\0';
-    options[nFlags].argInfo   = 0;
-    options[nFlags].arg       = NULL;
-    options[nFlags].val       = 0; 
-    int optidx = 0;
+    opt.add(
+        "0", // Default.
+        0, // Required?
+        1, // Number of args expected.
+        0, // Delimiter if expecting multiple args.
+        "run test on the Nth (from 0) CUDA GPU", // Help description.
+        "--gpu",
+        "-g"
+    );
 
-    options[optidx].longName  = "gpu";
-    options[optidx].shortName = 'g';
-    options[optidx].argInfo   = POPT_ARG_INT;
-    options[optidx].arg       = &gpuID;
-    options[optidx].val       = ARG_GPU;
-    optidx++;
-    options[optidx].longName  = "license";
-    options[optidx].shortName = 'l';
-    options[optidx].argInfo   = POPT_ARG_NONE;
-    options[optidx].arg       = &showLicense;
-    options[optidx].val       = ARG_LICENSE;
-    optidx++;
-    // }}}
-    poptContext pcon = poptGetContext(NULL,argc,argv,options,0);
-    int poptrc;
-    while ((poptrc = poptGetNextOpt(pcon)) > 0);
-    if (poptrc != -1) {
-        // An error occurred in parsing
-        fprintf(stderr, "%s: %s\n",poptBadOption(pcon,POPT_BADOPTION_NOALIAS),poptStrerror(poptrc));
-        exit(2);
+    opt.add(
+        "", // Default.
+        0, // Required?
+        0, // Number of args expected.
+        0, // Delimiter if expecting multiple args.
+        "show license terms for this build\n", // Help description.
+        "-l",
+        "--license"
+    );
+
+    opt.parse(argc, argv);
+    std::string lastArg;
+    if(opt.isSet("-g"))
+        opt.get("-g")->getInt(gpuID);
+    if(opt.isSet("-l"))
+        opt.get("-g")->getInt(showLicense);
+    if(opt.lastArgs.size() == 0) {
+        // do nothing, use default settings
+    } else if(opt.lastArgs.size() == 2) {
+        sscanf(opt.lastArgs[0]->c_str(),"%u",&megsToTest);
+        sscanf(opt.lastArgs[1]->c_str(),"%u",&maxIters);
+    } else {
+        printf("Error: Bad argument for [MB GPU RAM to test] [# iters]");
     }
-
-    // Parse leftover arguments (size and iteration count)
-    const char** leftovers = poptGetArgs(pcon);
-    if (leftovers != NULL && leftovers[0] != NULL) {
-        if (!validateNumeric(leftovers[0])) {
-            printf("Error: invalid number of MB to test \"%s\"\n",leftovers[0]);
-            exit(2);
-        }
-        sscanf(leftovers[0],"%u",&megsToTest);
-        if (leftovers[1] != NULL) {
-            if (!validateNumeric(leftovers[1])) {
-                printf("Error: invalid number of iterations \"%s\"\n",leftovers[1]);
-                exit(2);
-            }
-            sscanf(leftovers[1],"%u",&maxIters);
-        }
-    }
-    poptFreeContext(pcon);
-    delete[] options;
 
     if (showLicense) print_licensing();
     
