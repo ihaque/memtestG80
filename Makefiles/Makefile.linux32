@@ -1,8 +1,7 @@
-POPT_DIR=popt/linux32
 ZLIB_DIR=zlib/linux32
 CUDA_DIR=/usr/local/cuda/lib32
-CFLAGS=-DLINUX -O -Wall -I$(POPT_DIR) -m32
-NVCCFLAGS=-DLINUX -I$(POPT_DIR) -L$(POPT_DIR) -L$(ZLIB_DIR) -L$(CUDA_DIR) -O -Xptxas -v -Xcompiler -Wall -m32
+CFLAGS=-DLINUX -O -Wall -m32
+NVCCFLAGS=-DLINUX -L$(ZLIB_DIR) -L$(CUDA_DIR) -O -Xptxas -v -Xcompiler -Wall -m32
 NVCC=nvcc
 CXX=g++
 
@@ -18,5 +17,4 @@ memtestG80_core.o: memtestG80_core.cu memtestG80_core.h
 
 
 memtestG80: memtestG80_core.o memtestG80_cli.cu
-	$(NVCC) $(NVCCFLAGS) -o memtestG80 memtestG80_core.o memtestG80_cli.cu -lpopt
-
+	$(NVCC) $(NVCCFLAGS) -o memtestG80 memtestG80_core.o memtestG80_cli.cu
