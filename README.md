@@ -40,7 +40,7 @@ Makefiles for 32- and 64-bit Linux, Mac OS X, and 32-bit Windows are included
 From the root of the source package, it should be possible to build MemtestG80
 by executing the following:
 
-    make -f Makefile.OS
+    make -f Makefiles/Makefile.OS
 
 where `OS` is one of linux32, linux64, osx, or windows. Note that on Windows,
 GNU make (included, for example, in Cygwin) is assumed, not Microsoft nmake.
