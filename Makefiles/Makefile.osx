@@ -1,5 +1,5 @@
 CFLAGS=-DOSX -O -Wall
-NVCCFLAGS=-DOSX -O -Xptxas -v -Xcompiler -Wall
+NVCCFLAGS=-DOSX -O2 -Xptxas -v -Xcompiler -Wall
 NVCC=nvcc
 CXX=g++
 
