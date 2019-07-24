@@ -1,7 +1,7 @@
 ZLIB_DIR=zlib/linux32
 CUDA_DIR=/usr/local/cuda/lib32
 CFLAGS=-DLINUX -O -Wall -m32
-NVCCFLAGS=-DLINUX -L$(ZLIB_DIR) -L$(CUDA_DIR) -O -Xptxas -v -Xcompiler -Wall -m32
+NVCCFLAGS=-DLINUX -L$(ZLIB_DIR) -L$(CUDA_DIR) -O2 -Xptxas -v -Xcompiler -Wall -m32
 NVCC=nvcc
 CXX=g++
 
