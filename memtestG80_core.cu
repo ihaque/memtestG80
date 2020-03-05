@@ -62,7 +62,7 @@ uint memtestState::allocate(uint mbToTest) {
 		if (megsToTest == 0) return 0;
 		
 		try {
-			if (cudaMalloc((void**)&devTestMem,megsToTest*1048576UL) != cudaSuccess) throw 1;
+			if (cudaMalloc((void**)&devTestMem,((size_t) megsToTest)*1048576) != cudaSuccess) throw 1;
 			if (cudaMalloc((void**)&devTempMem,sizeof(uint)*nBlocks) != cudaSuccess) throw 2;
 			if ( (hostTempMem = (uint*)malloc(sizeof(uint)*nBlocks)) == NULL) throw 3;
 		} catch (int allocFailed) {
@@ -168,7 +168,7 @@ __global__ void deviceVerifyPairedModulo(uint* base,uint N,const uint shift,cons
 __host__ double gpuMemoryBandwidth(uint* src,uint* dst,uint mbToTest,uint iters) {
        uint start = getTimeMilliseconds();
 	   for (uint i = 0; i < iters; i++) {
-           cudaMemcpy(dst,src,mbToTest*1048576,cudaMemcpyDeviceToDevice);
+           cudaMemcpy(dst,src,((size_t) mbToTest)*1048576,cudaMemcpyDeviceToDevice);
        }
        //D-to-D memory copies are non-blocking, so sync to get correct timing
        cudaThreadSynchronize();
