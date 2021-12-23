@@ -264,12 +264,17 @@ int main(int argc,const char** argv) {
         printf("\tMemtest86 Walking ones (32-bit): %u errors (%u ms)\n",errorCount,end-start);
         // }}}
         // Random blocks {{{
-        start=getTimeMilliseconds();
-        tester.gpuRandomBlocks(errorCount,rand());
-        accumulatedErrors += errorCount;
-        errorCounts[7] += errorCount;
-        end=getTimeMilliseconds();
-        printf("\tRandom blocks: %u errors (%u ms)\n",errorCount,end-start);
+        if (tester.size() <= 16400){
+            start=getTimeMilliseconds();
+            tester.gpuRandomBlocks(errorCount,rand());
+            accumulatedErrors += errorCount;
+            errorCounts[7] += errorCount;
+            end=getTimeMilliseconds();
+            printf("\tRandom blocks: %u errors (%u ms)\n",errorCount,end-start);
+        }
+        else
+          printf("\tRandom blocks: skipped, see Issue #7\n");
+
         // }}}
         // Modulo-20, 32-bit {{{
         errorCount = 0;
