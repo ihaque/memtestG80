@@ -273,7 +273,7 @@ int main(int argc,const char** argv) {
             printf("\tRandom blocks: %u errors (%u ms)\n",errorCount,end-start);
         }
         else
-          printf("\tRandom blocks: skipped, see Bug #3569\n");
+          printf("\tRandom blocks: skipped, see Issue #7\n");
 
         // }}}
         // Modulo-20, 32-bit {{{
