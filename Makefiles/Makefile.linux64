@@ -1,7 +1,7 @@
 ZLIB_DIR=zlib/linux64
 CUDA_DIR=/usr/local/cuda/lib64
 CFLAGS=-DLINUX -O -Wall -m64
-NVCCFLAGS=-DLINUX -L$(ZLIB_DIR) -L$(CUDA_DIR) -O2 -Xptxas -v -Xcompiler -Wall -m64
+NVCCFLAGS=-DLINUX -L$(ZLIB_DIR) -L$(CUDA_DIR) -O2 -Xptxas -v -Xcompiler -Wall -m64 -std c++11
 NVCC=nvcc
 CXX=g++
 
